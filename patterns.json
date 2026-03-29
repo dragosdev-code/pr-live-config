@@ -5,25 +5,81 @@
   "patterns": {
     "pageRecognition": {
       "hasPRContent": {
-        "regex": "id=\"js-issues-search\"",
-        "flags": "i"
+        "regex": "/pull/\\\\d+",
+        "flags": ""
       },
       "knownSelectors": {
-        "regex": "js-navigation-container",
+        "regex": "js-issue-row|Box-row|issue-list-item|data-hovercard-type=\"pull_request\"",
         "flags": "i"
       },
       "emptyState": {
-        "regex": "blankslate",
+        "regex": "class=\"[^\"]*blankslate",
         "flags": "i"
       },
       "noResults": {
-        "regex": "No results matched your search",
+        "regex": "No results matched",
         "flags": "i"
+      }
+    },
+    "prRowSelectors": [
+      {
+        "name": "js-issue-row",
+        "type": "balanced-div",
+        "value": "js-issue-row",
+        "regex": "<div\\\\b[^>]*\\\\bclass=\"[^\"]*\\\\bjs-issue-row\\\\b[^\"]*\"[^>]*>",
+        "flags": "gi"
+      },
+      {
+        "name": "Box-row",
+        "type": "class",
+        "value": "Box-row",
+        "regex": "<[^>]*class=\"[^\"]*Box-row[^\"]*\"[^>]*>(.*?)</[^>]*>",
+        "flags": "gis"
+      },
+      {
+        "name": "issue-list-item",
+        "type": "class",
+        "value": "issue-list-item",
+        "regex": "<[^>]*class=\"[^\"]*issue-list-item[^\"]*\"[^>]*>(.*?)</[^>]*>",
+        "flags": "gis"
+      },
+      {
+        "name": "hovercard-pr",
+        "type": "attribute",
+        "value": "data-hovercard-type=\"pull_request\"",
+        "regex": "<[^>]*data-hovercard-type=\"pull_request\"[^>]*>(.*?)</[^>]*>",
+        "flags": "gis"
+      }
+    ],
+    "prRowFallback": {
+      "linkScan": {
+        "regex": "<a[^>]*href=\"[^\"]*/pull/\\\\d+[^\"]*\"[^>]*>([^<]*)</a>",
+        "flags": "gi"
+      },
+      "containerExtract": {
+        "regex": "<(?:div|article|li|tr)[^>]*>.*?<a[^>]*href=\"([^\"]*/pull/\\\\d+)[^\"]*\"[^>]*>([^<]*)</a>.*?</(?:div|article|li|tr)>",
+        "flags": "gi"
       }
     },
     "prLink": [
       {
-        "regex": "<a[^>]*href=\"([^\"]*\\/pull\\/\\d+)\"[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*>([^<]+)<\\/a>",
+        "regex": "<a[^>]*href=\"([^\"]*/pull/\\\\d+)\"[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*>([^<]+)</a>",
+        "flags": "i",
+        "captureGroups": {
+          "url": 1,
+          "title": 2
+        }
+      },
+      {
+        "regex": "<a[^>]*href=\"([^\"]*/pull/\\\\d+)\"[^>]*>([^<]+)</a>",
+        "flags": "i",
+        "captureGroups": {
+          "url": 1,
+          "title": 2
+        }
+      },
+      {
+        "regex": "<a[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*href=\"([^\"]*/pull/\\\\d+)\"[^>]*>([^<]+)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
@@ -31,21 +87,196 @@
         }
       }
     ],
-    "prNumber": [
-      {
-        "regex": "<span[^>]*class=\"[^\"]*opened-by[^\"]*\"[^>]*>\\s*#(\\d+)",
-        "flags": "i",
+    "prNumber": {
+      "fromUrl": {
+        "regex": "/pull/(\\\\d+)",
+        "flags": "",
+        "captureGroups": {
+          "number": 1
+        }
+      },
+      "fromElement": {
+        "regex": "#(\\\\d+)\\\\s+opened",
+        "flags": "",
         "captureGroups": {
           "number": 1
         }
       }
-    ],
+    },
     "repoName": {
-      "regex": "data-hovercard-type=\"repository\"[^>]*>([^<]+)<\\/a>",
-      "flags": "i",
+      "regex": "/([^/]+/[^/]+)/pull",
+      "flags": "",
       "captureGroups": {
-        "name": 1
+        "repoName": 1
       }
-    }
+    },
+    "author": [
+      {
+        "regex": "<a[^>]*href=\"[^\"]*/([^\"/?]+)\"[^>]*title=\"[^\"]*\"[^>]*>([^<]+)</a>",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1,
+          "loginAlt": 2
+        }
+      },
+      {
+        "regex": "<a[^>]*class=\"[^\"]*author[^\"]*\"[^>]*>([^<]+)</a>",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      {
+        "regex": "<a[^>]*data-hovercard-type=\"user\"[^>]*data-hovercard-url=\"[^\"]*/users/([^\"/]+)/[^\"]*\"[^>]*>",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      {
+        "regex": "opened[^<]*by[^<]*<a[^>]*>([^<]+)</a>",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      }
+    ],
+    "assigneeAvatar": {
+      "stackContainer": {
+        "regex": "<div\\\\b(?=[^>]*\\\\bclass=\"[^\"]*\\\\bAvatarStack-body\\\\b[^\"]*\")(?=[^>]*\\\\baria-label=\"Assigned to[^\"]*\")[^>]*>",
+        "flags": "i"
+      },
+      "closeTag": {
+        "regex": "</div>",
+        "flags": "i"
+      },
+      "anchorSelector": {
+        "regex": "<a\\\\b[^>]*class=\"[^\"]*\\\\bavatar-user\\\\b[^\"]*\"[^>]*>[\\\\s\\\\S]*?</a>",
+        "flags": "gi"
+      },
+      "hrefExtract": {
+        "regex": "\\\\bhref=\"([^\"]+)\"",
+        "flags": "i",
+        "captureGroups": {
+          "href": 1
+        }
+      },
+      "loginFromHrefEncoded": {
+        "regex": "assignee%3A([^&\"+]+)",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      "loginFromHrefPlain": {
+        "regex": "assignee:([^&\"+]+)",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      "loginFromAlt": {
+        "regex": "\\\\balt=\"@([^\"]+)\"",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      "loginFromAria": {
+        "regex": "\\\\baria-label=\"([^\"]+?)(?:'|&#39;|\\\\u2019)s assigned issues\"",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      "avatarImg": {
+        "regex": "<img[^>]*class=\"[^\"]*\\\\bfrom-avatar\\\\b[^\"]*\"[^>]*\\\\bsrc=\"([^\"]+)\"",
+        "flags": "i",
+        "captureGroups": {
+          "src": 1
+        }
+      }
+    },
+    "timestamp": [
+      {
+        "regex": "<relative-time[^>]+datetime=\"([^\"]+)\"",
+        "flags": "i",
+        "captureGroups": {
+          "datetime": 1
+        }
+      },
+      {
+        "regex": "<time[^>]+datetime=\"([^\"]+)\"",
+        "flags": "i",
+        "captureGroups": {
+          "datetime": 1
+        }
+      },
+      {
+        "regex": "datetime=\"([^\"]+)\"",
+        "flags": "i",
+        "captureGroups": {
+          "datetime": 1
+        }
+      }
+    ],
+    "prType": [
+      {
+        "type": "draft",
+        "pattern": {
+          "regex": "aria-label=\"[^\"]*Draft Pull Request[^\"]*\"",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "open",
+        "pattern": {
+          "regex": "aria-label=\"[^\"]*Open Pull Request[^\"]*\"",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "merged",
+        "pattern": {
+          "regex": "aria-label=\"[^\"]*Merged Pull Request[^\"]*\"",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "draft",
+        "pattern": {
+          "regex": "octicon-git-pull-request-draft",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "draft",
+        "pattern": {
+          "regex": "color-fg-draft",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "open",
+        "pattern": {
+          "regex": "octicon-git-pull-request(?!-)",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "open",
+        "pattern": {
+          "regex": "color-fg-open",
+          "flags": "i"
+        }
+      },
+      {
+        "type": "merged",
+        "pattern": {
+          "regex": "octicon-git-merge",
+          "flags": "i"
+        }
+      }
+    ]
   }
 }
