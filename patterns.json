@@ -5,7 +5,7 @@
   "patterns": {
     "pageRecognition": {
       "hasPRContent": {
-        "regex": "/pull/\\\\d+",
+        "regex": "/pull/\\d+",
         "flags": ""
       },
       "knownSelectors": {
@@ -26,7 +26,7 @@
         "name": "js-issue-row",
         "type": "balanced-div",
         "value": "js-issue-row",
-        "regex": "<div\\\\b[^>]*\\\\bclass=\"[^\"]*\\\\bjs-issue-row\\\\b[^\"]*\"[^>]*>",
+        "regex": "<div\\b[^>]*\\bclass=\"[^\"]*\\bjs-issue-row\\b[^\"]*\"[^>]*>",
         "flags": "gi"
       },
       {
@@ -53,17 +53,17 @@
     ],
     "prRowFallback": {
       "linkScan": {
-        "regex": "<a[^>]*href=\"[^\"]*/pull/\\\\d+[^\"]*\"[^>]*>([^<]*)</a>",
+        "regex": "<a[^>]*href=\"[^\"]*\/pull\/\\d+[^\"]*\"[^>]*>([^<]*)</a>",
         "flags": "gi"
       },
       "containerExtract": {
-        "regex": "<(?:div|article|li|tr)[^>]*>.*?<a[^>]*href=\"([^\"]*/pull/\\\\d+)[^\"]*\"[^>]*>([^<]*)</a>.*?</(?:div|article|li|tr)>",
+        "regex": "<(?:div|article|li|tr)[^>]*>.*?<a[^>]*href=\"([^\"]*\/pull\/\\d+)[^\"]*\"[^>]*>([^<]*)</a>.*?<\/(?:div|article|li|tr)>",
         "flags": "gi"
       }
     },
     "prLink": [
       {
-        "regex": "<a[^>]*href=\"([^\"]*/pull/\\\\d+)\"[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*>([^<]+)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
@@ -71,7 +71,7 @@
         }
       },
       {
-        "regex": "<a[^>]*href=\"([^\"]*/pull/\\\\d+)\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*>([^<]+)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
@@ -79,7 +79,7 @@
         }
       },
       {
-        "regex": "<a[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*href=\"([^\"]*/pull/\\\\d+)\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*>([^<]+)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
@@ -89,14 +89,14 @@
     ],
     "prNumber": {
       "fromUrl": {
-        "regex": "/pull/(\\\\d+)",
+        "regex": "/pull/(\\d+)",
         "flags": "",
         "captureGroups": {
           "number": 1
         }
       },
       "fromElement": {
-        "regex": "#(\\\\d+)\\\\s+opened",
+        "regex": "#(\\d+)\\s+opened",
         "flags": "",
         "captureGroups": {
           "number": 1
@@ -112,7 +112,7 @@
     },
     "author": [
       {
-        "regex": "<a[^>]*href=\"[^\"]*/([^\"/?]+)\"[^>]*title=\"[^\"]*\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*href=\"[^\"]*\/([^\"/?]+)\"[^>]*title=\"[^\"]*\"[^>]*>([^<]+)</a>",
         "flags": "i",
         "captureGroups": {
           "login": 1,
@@ -127,7 +127,7 @@
         }
       },
       {
-        "regex": "<a[^>]*data-hovercard-type=\"user\"[^>]*data-hovercard-url=\"[^\"]*/users/([^\"/]+)/[^\"]*\"[^>]*>",
+        "regex": "<a[^>]*data-hovercard-type=\"user\"[^>]*data-hovercard-url=\"[^\"]*\/users\/([^\"\/]+)\/[^\"]*\"[^>]*>",
         "flags": "i",
         "captureGroups": {
           "login": 1
@@ -143,7 +143,7 @@
     ],
     "assigneeAvatar": {
       "stackContainer": {
-        "regex": "<div\\\\b(?=[^>]*\\\\bclass=\"[^\"]*\\\\bAvatarStack-body\\\\b[^\"]*\")(?=[^>]*\\\\baria-label=\"Assigned to[^\"]*\")[^>]*>",
+        "regex": "<div\\b(?=[^>]*\\bclass=\"[^\"]*\\bAvatarStack-body\\b[^\"]*\")(?=[^>]*\\baria-label=\"Assigned to[^\"]*\")[^>]*>",
         "flags": "i"
       },
       "closeTag": {
@@ -151,11 +151,11 @@
         "flags": "i"
       },
       "anchorSelector": {
-        "regex": "<a\\\\b[^>]*class=\"[^\"]*\\\\bavatar-user\\\\b[^\"]*\"[^>]*>[\\\\s\\\\S]*?</a>",
+        "regex": "<a\\b[^>]*class=\"[^\"]*\\bavatar-user\\b[^\"]*\"[^>]*>[\\s\\S]*?</a>",
         "flags": "gi"
       },
       "hrefExtract": {
-        "regex": "\\\\bhref=\"([^\"]+)\"",
+        "regex": "\\bhref=\"([^\"]+)\"",
         "flags": "i",
         "captureGroups": {
           "href": 1
@@ -176,21 +176,21 @@
         }
       },
       "loginFromAlt": {
-        "regex": "\\\\balt=\"@([^\"]+)\"",
+        "regex": "\\balt=\"@([^\"]+)\"",
         "flags": "i",
         "captureGroups": {
           "login": 1
         }
       },
       "loginFromAria": {
-        "regex": "\\\\baria-label=\"([^\"]+?)(?:'|&#39;|\\\\u2019)s assigned issues\"",
+        "regex": "\\baria-label=\"([^\"]+?)(?:'|&#39;|\\u2019)s assigned issues\"",
         "flags": "i",
         "captureGroups": {
           "login": 1
         }
       },
       "avatarImg": {
-        "regex": "<img[^>]*class=\"[^\"]*\\\\bfrom-avatar\\\\b[^\"]*\"[^>]*\\\\bsrc=\"([^\"]+)\"",
+        "regex": "<img[^>]*class=\"[^\"]*\\bfrom-avatar\\b[^\"]*\"[^>]*\\bsrc=\"([^\"]+)\"",
         "flags": "i",
         "captureGroups": {
           "src": 1
