@@ -277,6 +277,112 @@
           "flags": "i"
         }
       }
-    ]
+    ],
+    "newExperience": {
+      "pageMarker": {
+        "regex": "data-testid=\"listitem-title-link\"",
+        "flags": "i"
+      },
+      "rowSelector": {
+        "regex": "<li\\b[^>]*class=\"[^\"]*ListItem-module__listItem[^\"]*\"[^>]*>",
+        "flags": "gi"
+      },
+      "titleLink": {
+        "regex": "<a(?=[^>]*data-testid=\"listitem-title-link\")[^>]*href=\"([^\"]*)\"[^>]*>([\\s\\S]*?)</a>",
+        "flags": "i",
+        "captureGroups": {
+          "url": 1,
+          "titleHtml": 2
+        }
+      },
+      "repoName": {
+        "regex": "/([^/]+/[^/]+)/pull",
+        "flags": "",
+        "captureGroups": {
+          "repoName": 1
+        }
+      },
+      "prNumber": {
+        "regex": "/pull/(\\d+)",
+        "flags": "",
+        "captureGroups": {
+          "number": 1
+        }
+      },
+      "author": {
+        "regex": "([\\w][\\w-]*)\\s*<span[^>]*>\\s*opened\\b",
+        "flags": "i",
+        "captureGroups": {
+          "login": 1
+        }
+      },
+      "timestamp": [
+        {
+          "regex": "<relative-time[^>]+datetime=\"([^\"]+)\"",
+          "flags": "i",
+          "captureGroups": {
+            "datetime": 1
+          }
+        },
+        {
+          "regex": "<time[^>]+datetime=\"([^\"]+)\"",
+          "flags": "i",
+          "captureGroups": {
+            "datetime": 1
+          }
+        },
+        {
+          "regex": "datetime=\"([^\"]+)\"",
+          "flags": "i",
+          "captureGroups": {
+            "datetime": 1
+          }
+        }
+      ],
+      "prType": [
+        {
+          "type": "draft",
+          "pattern": {
+            "regex": "aria-label=\"[^\"]*Draft[^\"]*\"",
+            "flags": "i"
+          }
+        },
+        {
+          "type": "open",
+          "pattern": {
+            "regex": "aria-label=\"Open\"",
+            "flags": "i"
+          }
+        },
+        {
+          "type": "merged",
+          "pattern": {
+            "regex": "aria-label=\"[^\"]*Merged[^\"]*\"",
+            "flags": "i"
+          }
+        },
+        {
+          "type": "draft",
+          "pattern": {
+            "regex": "octicon-git-pull-request-draft",
+            "flags": "i"
+          }
+        },
+        {
+          "type": "open",
+          "pattern": {
+            "regex": "octicon-git-pull-request(?!-)",
+            "flags": "i"
+          }
+        },
+        {
+          "type": "merged",
+          "pattern": {
+            "regex": "octicon-git-merge",
+            "flags": "i"
+          }
+        }
+      ]
+    }
   }
 }
