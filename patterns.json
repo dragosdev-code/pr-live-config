@@ -1,7 +1,7 @@
 {
-  "version": 2,
+  "version": 3,
   "minExtensionVersion": "1.0.0",
-  "updatedAt": "2026-04-04T16:31:05Z",
+  "updatedAt": "2026-04-06T16:52:20Z",
   "patterns": {
     "pageRecognition": {
       "hasPRContent": {
@@ -283,12 +283,19 @@
         "regex": "data-testid=\"listitem-title-link\"",
         "flags": "i"
       },
+      "resultsCount": {
+        "regex": "<span(?=[^>]*data-testid=\"results-count\")[^>]*>\\s*(\\d+)[\\s\\S]*?\\bresults\\b",
+        "flags": "i",
+        "captureGroups": {
+          "count": 1
+        }
+      },
       "rowSelector": {
-        "regex": "<li\\b[^>]*class=\"[^\"]*ListItem-module__listItem[^\"]*\"[^>]*>",
+        "regex": "<li\\b[^>]*class=\"[^\"]*(?:PullsListItem-module__listItem|ListItem-module__listItem)[^\"]*\"[^>]*>",
         "flags": "gi"
       },
       "titleLink": {
-        "regex": "<a(?=[^>]*data-testid=\"listitem-title-link\")[^>]*href=\"([^\"]*)\"[^>]*>([\\s\\S]*?)</a>",
+        "regex": "<a(?=[^>]*data-testid=\"listitem-title-link\")(?=[^>]*\\bhref=)[^>]*href=\"([^\"]*)\"[^>]*>([\\s\\S]*?)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
