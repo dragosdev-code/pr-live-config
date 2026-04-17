@@ -1,7 +1,7 @@
 {
-  "version": 4,
+  "version": 5,
   "minExtensionVersion": "1.0.0",
-  "updatedAt": "2026-04-11T12:15:05.579Z",
+  "updatedAt": "2026-04-17T17:10:00.000Z",
   "patterns": {
     "pageRecognition": {
       "hasPRContent": {
@@ -359,10 +359,11 @@
         }
       },
       "author": {
-        "regex": "([\\w][\\w-]*)\\s*<span[^>]*>\\s*opened\\b",
+        "regex": "(?:<button[^>]*data-testid=[\"']author-filter-link[\"'][^>]*>([\\w][\\w-]*)</button>|([\\w][\\w-]*))\\s*<span[^>]*>\\s*opened\\b",
         "flags": "i",
         "captureGroups": {
-          "login": 1
+          "login": 1,
+          "loginAlt": 2
         }
       },
       "timestamp": [
