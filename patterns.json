@@ -1,7 +1,7 @@
 {
-  "version": 5,
+  "version": 6,
   "minExtensionVersion": "1.0.0",
-  "updatedAt": "2026-04-17T17:10:00.000Z",
+  "updatedAt": "2026-05-27T12:00:00.000Z",
   "patterns": {
     "pageRecognition": {
       "hasPRContent": {
@@ -53,17 +53,17 @@
     ],
     "prRowFallback": {
       "linkScan": {
-        "regex": "<a[^>]*href=\"[^\"]*\/pull\/\\d+[^\"]*\"[^>]*>([^<]*)</a>",
+        "regex": "<a[^>]*href=\"[^\"]*\/pull\/\\d+[^\"]*\"[^>]*>([\\s\\S]*?)</a>",
         "flags": "gi"
       },
       "containerExtract": {
-        "regex": "<(?:div|article|li|tr)[^>]*>.*?<a[^>]*href=\"([^\"]*\/pull\/\\d+)[^\"]*\"[^>]*>([^<]*)</a>.*?<\/(?:div|article|li|tr)>",
+        "regex": "<(?:div|article|li|tr)[^>]*>.*?<a[^>]*href=\"([^\"]*\/pull\/\\d+)[^\"]*\"[^>]*>([\\s\\S]*?)</a>.*?<\/(?:div|article|li|tr)>",
         "flags": "gi"
       }
     },
     "prLink": [
       {
-        "regex": "<a[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*>([\\s\\S]*?)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
@@ -71,7 +71,7 @@
         }
       },
       {
-        "regex": "<a[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*>([\\s\\S]*?)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
@@ -79,7 +79,7 @@
         }
       },
       {
-        "regex": "<a[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*>([^<]+)</a>",
+        "regex": "<a[^>]*class=\"[^\"]*(?:markdown-title|js-navigation-open|Link--primary)[^\"]*\"[^>]*href=\"([^\"]*\/pull\/\\d+)\"[^>]*>([\\s\\S]*?)</a>",
         "flags": "i",
         "captureGroups": {
           "url": 1,
